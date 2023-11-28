@@ -430,8 +430,7 @@ function Viewport(editor) {
 		backgroundToEquirect,
 		backgroundProjectedSkyboxHeight,
 		backgroundProjectedSkyboxRadius,
-		backgroundProjectedSkyboxScale,
-		checkbox
+		backgroundProjectedSkyboxScale
 	) {
 		scene.remove(groundProjectedSkybox);
 		switch (backgroundType) {
@@ -469,9 +468,6 @@ function Viewport(editor) {
 					// TODO: handle cube map texture
 					groundProjectedSkybox.material.uniforms.map.value =
 						backgroundToEquirect;
-					if (checkbox === true) {
-						scene.environment = backgroundToEquirect;
-					}
 					groundProjectedSkybox.scale.setScalar(backgroundProjectedSkyboxScale);
 					groundProjectedSkybox.height = backgroundProjectedSkyboxHeight;
 					groundProjectedSkybox.radius = backgroundProjectedSkyboxRadius;

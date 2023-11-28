@@ -10,6 +10,10 @@ import {
 	UINumber,
 } from "./libs/ui.js";
 import { UIBoolean, UIOutliner, UITexture } from "./libs/ui.three.js";
+// import { GroundProjectedSkybox } from "three/addons/objects/GroundProjectedSkybox.js";
+
+// let objectOfSkybox = {};
+// let groundProjectedSkybox = new GroundProjectedSkybox(objectOfSkybox);
 
 function SidebarScene(editor) {
 	const signals = editor.signals;
@@ -182,7 +186,7 @@ function SidebarScene(editor) {
 
 	// background === equirect
 
-	// canvas
+	// background canvas
 	const backgroundToEquirect = new UITexture(editor)
 		.setMarginLeft("8px")
 		.onChange(onBackgroundChanged)
@@ -191,7 +195,7 @@ function SidebarScene(editor) {
 
 	container.add(backgroundRow);
 
-	// les valeurs
+	// background valeurs GroundProjectedSkybox
 	const projBackground = new UIRow().setDisplay("none").setMarginLeft("90px");
 
 	projBackground.add(new UIText("height: "));
@@ -200,6 +204,7 @@ function SidebarScene(editor) {
 		.setWidth("40px")
 		.setRange(5, 100)
 		.onChange(onBackgroundChanged);
+
 	// add backgroundSkyboxHeight to bgToEquirect
 	projBackground.add(backgroundProjectedSkyboxHeight);
 
@@ -239,11 +244,9 @@ function SidebarScene(editor) {
 	backgroundEquirectRow.add(backgroundIntensity);
 
 	container.add(backgroundEquirectRow);
-
-	const checkboxRow = new UIBoolean(
-		editor.config.getKey("Sync background and environment")
-	);
-	container.add(checkboxRow);
+	// checkbox environment === background
+	const checkboxSyncBackEnv = new UIBoolean(editor.config.getKey("Sync HDRIs"));
+	container.add(checkboxSyncBackEnv);
 
 	function onBackgroundChanged() {
 		signals.sceneBackgroundChanged.dispatch(
@@ -258,8 +261,18 @@ function SidebarScene(editor) {
 			backgroundProjectedSkyboxHeight.getValue(),
 			backgroundProjectedSkyboxRadius.getValue(),
 			backgroundProjectedSkyboxScale.getValue(),
-			checkboxRow.getValue()
+			checkboxSyncBackEnv.getValue()
 		);
+
+		// background in the environment
+		if (checkboxSyncBackEnv.getValue() === true) {
+			editor.scene.environment = backgroundToEquirect.texture;
+			environmentType.setValue("Equirectangular");
+			environmentEquirectangularTexture.setValue(backgroundToEquirect.texture);
+			refreshEnvironmentUI();
+		}
+
+		// refreshUI
 	}
 
 	function refreshBackgroundUI() {
@@ -302,6 +315,8 @@ function SidebarScene(editor) {
 	);
 	environmentRow.add(environmentType);
 
+	// environment canvas
+
 	const environmentEquirectangularTexture = new UITexture(editor)
 		.setMarginLeft("8px")
 		.onChange(onEnvironmentChanged)
@@ -313,10 +328,18 @@ function SidebarScene(editor) {
 	function onEnvironmentChanged() {
 		signals.sceneEnvironmentChanged.dispatch(
 			environmentType.getValue(),
-			environmentEquirectangularTexture.getValue()
+			environmentEquirectangularTexture.getValue(),
+			checkboxSyncBackEnv.getValue(),
+			backgroundProjectedSkyboxScale.getValue()
 		);
+		// environment  in the background
+		if (checkboxSyncBackEnv.getValue() === true) {
+			backgroundType.setValue("ProjectedBackground");
+			backgroundToEquirect.setValue(editor.scene.environment);
+			onBackgroundChanged();
+			refreshBackgroundUI();
+		}
 	}
-
 	function refreshEnvironmentUI() {
 		const type = environmentType.getValue();
 
@@ -326,10 +349,10 @@ function SidebarScene(editor) {
 		);
 	}
 
-	// sync Background and Environment equirect texture
-	checkboxRow.add(new UIText("Sync background and environment"));
+	// sync Background and Environment equirect text
+	checkboxSyncBackEnv.add(new UIText("Sync HDRIs"));
 
-	container.add(checkboxRow);
+	container.add(checkboxSyncBackEnv);
 
 	// fog
 
@@ -457,30 +480,27 @@ function SidebarScene(editor) {
 					backgroundEquirectangularTexture.setValue(scene.background);
 					backgroundBlurriness.setValue(scene.backgroundBlurriness);
 					backgroundIntensity.setValue(scene.backgroundIntensity);
-					// add me
-					backgroundType.setValue("ProjectedBackground");
-					backgroundToEquirect.setValue(scene.environment);
-					backgroundProjectedSkyboxHeight.setValue(
-						scene.backgroundSkyboxHeight
-					);
-					backgroundProjectedSkyboxRadius.setValue(
-						scene.backgroundSkyboxRadius
-					);
-					backgroundProjectedSkyboxScale.setValue(
-						scene.backgroundProjectedSkyboxScale
-					);
 				} else {
 					backgroundType.setValue("Texture");
 					backgroundTexture.setValue(scene.background);
 				}
 			}
+		} else if (backgroundType.getValue() === "ProjectedBackground") {
+			backgroundType.setValue("ProjectedBackground");
+			backgroundToEquirect.setValue(scene.environment);
+			backgroundProjectedSkyboxScale.setValue(
+				scene.backgroundProjectedSkyboxScale
+			);
+			backgroundProjectedSkyboxHeight.setValue(scene.backgroundSkyboxHeight);
+			backgroundProjectedSkyboxRadius.setValue(scene.backgroundSkyboxRadius);
 		} else {
 			backgroundType.setValue("None");
 		}
 
 		if (scene.environment) {
 			if (
-				scene.environment.mapping === THREE.EquirectangularReflectionMapping
+				scene.environment.mapping === THREE.EquirectangularReflectionMapping ||
+				checkboxSyncBackEnv.getValue() === true
 			) {
 				environmentType.setValue("Equirectangular");
 				environmentEquirectangularTexture.setValue(scene.environment);
@@ -511,21 +531,12 @@ function SidebarScene(editor) {
 		refreshFogUI();
 	}
 
-	checkboxRow.onChange(function () {
-		const value = this.getValue();
-
-		editor.config.getKey("Sync background and environment", value);
-		if (value === true) {
-			const type = environmentType.getValue();
-
+	checkboxSyncBackEnv.onChange(function () {
+		if (checkboxSyncBackEnv.getValue() === true) {
 			environmentType.setValue("Equirectangular");
 			environmentEquirectangularTexture.setValue(editor.scene.environment);
-			environmentType.setWidth(type !== "Equirectangular" ? "150px" : "110px");
-			environmentEquirectangularTexture.setDisplay(
-				type === "Equirectangular" ? "" : "none"
-			);
+			refreshEnvironmentUI();
 		}
-		console.log(editor.scene.environment);
 	});
 
 	function refreshFogUI() {
