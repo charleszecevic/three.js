@@ -137,7 +137,7 @@ function SidebarScene(editor) {
 	container.add(outliner);
 	container.add(new UIBreak());
 
-	// background
+	// --------------------------------------------------background--------------------------------------------------
 
 	const backgroundRow = new UIRow();
 
@@ -265,12 +265,7 @@ function SidebarScene(editor) {
 		);
 
 		// background in the environment
-		if (checkboxSyncBackEnv.getValue() === true) {
-			editor.scene.environment = backgroundToEquirect.texture;
-			environmentType.setValue("Equirectangular");
-			environmentEquirectangularTexture.setValue(backgroundToEquirect.texture);
-			refreshEnvironmentUI();
-		}
+		refreshBackEnv(checkboxSyncBackEnv.getValue(), "background");
 
 		// refreshUI
 	}
@@ -333,13 +328,9 @@ function SidebarScene(editor) {
 			backgroundProjectedSkyboxScale.getValue()
 		);
 		// environment  in the background
-		if (checkboxSyncBackEnv.getValue() === true) {
-			backgroundType.setValue("ProjectedBackground");
-			backgroundToEquirect.setValue(editor.scene.environment);
-			onBackgroundChanged();
-			refreshBackgroundUI();
-		}
+		refreshBackEnv(checkboxSyncBackEnv.getValue(), "environment");
 	}
+
 	function refreshEnvironmentUI() {
 		const type = environmentType.getValue();
 
@@ -348,6 +339,21 @@ function SidebarScene(editor) {
 			type === "Equirectangular" ? "" : "none"
 		);
 	}
+
+	const refreshBackEnv = (valueOfCheckbox, selectChoice) => {
+		if (valueOfCheckbox === true && selectChoice === "background") {
+			editor.scene.environment = backgroundToEquirect.texture;
+			environmentType.setValue("Equirectangular");
+			environmentEquirectangularTexture.setValue(backgroundToEquirect.texture);
+			refreshEnvironmentUI();
+		}
+		if (valueOfCheckbox === true && selectChoice === "environment") {
+			backgroundType.setValue("ProjectedBackground");
+			backgroundToEquirect.setValue(editor.scene.environment);
+			refreshBackgroundUI();
+			onBackgroundChanged();
+		}
+	};
 
 	// sync Background and Environment equirect text
 	checkboxSyncBackEnv.add(new UIText("Sync HDRIs"));
