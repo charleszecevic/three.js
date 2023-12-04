@@ -445,6 +445,7 @@ function Viewport(editor) {
 				break;
 
 			case "Texture":
+				scene.background = null;
 				if (backgroundTexture) {
 					scene.background = backgroundTexture;
 				}

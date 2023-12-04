@@ -143,7 +143,7 @@ function SidebarScene(editor) {
 
 	const backgroundType = new UISelect()
 		.setOptions({
-			None: "default",
+			None: "None",
 			Color: "Color",
 			Texture: "Texture",
 			Equirectangular: "Equirect",
@@ -260,8 +260,7 @@ function SidebarScene(editor) {
 			backgroundToEquirect.getValue(),
 			backgroundProjectedSkyboxHeight.getValue(),
 			backgroundProjectedSkyboxRadius.getValue(),
-			backgroundProjectedSkyboxScale.getValue(),
-			checkboxSyncBackEnv.getValue()
+			backgroundProjectedSkyboxScale.getValue()
 		);
 
 		// background in the environment
@@ -288,13 +287,13 @@ function SidebarScene(editor) {
 		projBackground.setDisplay(type === "ProjectedBackground" ? "" : "none");
 	}
 
-	// environment
+	// --------------------------------------------------environment--------------------------------------------------
 
 	const environmentRow = new UIRow();
 
 	const environmentType = new UISelect()
 		.setOptions({
-			None: "Default",
+			None: "None",
 			Equirectangular: "Equirect",
 			ModelViewer: "ModelViewer",
 		})
@@ -323,9 +322,7 @@ function SidebarScene(editor) {
 	function onEnvironmentChanged() {
 		signals.sceneEnvironmentChanged.dispatch(
 			environmentType.getValue(),
-			environmentEquirectangularTexture.getValue(),
-			checkboxSyncBackEnv.getValue(),
-			backgroundProjectedSkyboxScale.getValue()
+			environmentEquirectangularTexture.getValue()
 		);
 		// environment  in the background
 		refreshBackEnv(checkboxSyncBackEnv.getValue(), "environment");
@@ -341,18 +338,26 @@ function SidebarScene(editor) {
 	}
 
 	const refreshBackEnv = (valueOfCheckbox, selectChoice) => {
-		if (valueOfCheckbox === true && selectChoice === "background") {
-			editor.scene.environment = backgroundToEquirect.texture;
-			environmentType.setValue("Equirectangular");
-			environmentEquirectangularTexture.setValue(backgroundToEquirect.texture);
-			refreshEnvironmentUI();
+		if (valueOfCheckbox === true) {
+			if (
+				selectChoice === "background" &&
+				backgroundType.getValue() != "Texture"
+			) {
+				editor.scene.environment = backgroundToEquirect.texture;
+				backgroundEquirectangularTexture.setValue(backgroundToEquirect.texture);
+				environmentEquirectangularTexture.setValue(editor.scene.environment);
+			} else if (
+				selectChoice === "environment" &&
+				environmentType.getValue() != "ModelViewer" &&
+				environmentType.getValue() != "None"
+			) {
+				backgroundToEquirect.setValue(editor.scene.environment);
+				backgroundEquirectangularTexture.setValue(editor.scene.environment);
+				onBackgroundChanged();
+			}
 		}
-		if (valueOfCheckbox === true && selectChoice === "environment") {
-			backgroundType.setValue("ProjectedBackground");
-			backgroundToEquirect.setValue(editor.scene.environment);
-			refreshBackgroundUI();
-			onBackgroundChanged();
-		}
+		refreshEnvironmentUI();
+		refreshBackgroundUI();
 	};
 
 	// sync Background and Environment equirect text
@@ -360,7 +365,7 @@ function SidebarScene(editor) {
 
 	container.add(checkboxSyncBackEnv);
 
-	// fog
+	// ------------------------------------------------------fog------------------------------------------------------
 
 	function onFogChanged() {
 		signals.sceneFogChanged.dispatch(
@@ -385,7 +390,7 @@ function SidebarScene(editor) {
 	const fogTypeRow = new UIRow();
 	const fogType = new UISelect()
 		.setOptions({
-			None: "",
+			None: "None",
 			Fog: "Linear",
 			FogExp2: "Exponential",
 		})
@@ -539,7 +544,7 @@ function SidebarScene(editor) {
 
 	checkboxSyncBackEnv.onChange(function () {
 		if (checkboxSyncBackEnv.getValue() === true) {
-			environmentType.setValue("Equirectangular");
+			// environmentType.setValue("Equirectangular");
 			environmentEquirectangularTexture.setValue(editor.scene.environment);
 			refreshEnvironmentUI();
 		}

@@ -9,8 +9,6 @@ function MenubarStatus(editor) {
 	const container = new UIPanel();
 	container.setClass("menu right");
 
-	// ------------------------------old autosave------------------------------
-
 	const autosave = new UIBoolean(
 		editor.config.getKey("autosave"),
 		strings.getKey("menubar/status/autosave")
@@ -35,16 +33,6 @@ function MenubarStatus(editor) {
 	editor.signals.savingFinished.add(function () {
 		autosave.text.setTextDecoration("none");
 	});
-
-	// ------------------------------new autosave------------------------------
-
-	// const autosave = new UIButton(strings.getKey("menubar/status/autosave"));
-	// autosave.onClick(function () {
-	// 	console.log(editor.signals.sceneGraphChanged.dispatch());
-	// 	// if (value === true) {
-	// 	// 	editor.signals.sceneGraphChanged.dispatch();
-	// 	// }
-	// });
 
 	container.add(autosave);
 
