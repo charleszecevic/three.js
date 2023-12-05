@@ -343,13 +343,18 @@ function SidebarScene(editor) {
 				selectChoice === "background" &&
 				backgroundType.getValue() != "Texture"
 			) {
-				editor.scene.environment = backgroundToEquirect.texture;
-				backgroundEquirectangularTexture.setValue(backgroundToEquirect.texture);
+				backgroundType.getValue() === "Equirectangular"
+					? (editor.scene.environment =
+							backgroundEquirectangularTexture.texture)
+					: (editor.scene.environment = backgroundToEquirect.texture);
+				backgroundToEquirect.setValue(editor.scene.environment);
+				backgroundEquirectangularTexture.setValue(editor.scene.environment);
 				environmentEquirectangularTexture.setValue(editor.scene.environment);
+				editor.scene.environment != null &&
+					environmentType.setValue("Equirectangular");
 			} else if (
 				selectChoice === "environment" &&
-				environmentType.getValue() != "ModelViewer" &&
-				environmentType.getValue() != "None"
+				environmentType.getValue() === "Equirectangular"
 			) {
 				backgroundToEquirect.setValue(editor.scene.environment);
 				backgroundEquirectangularTexture.setValue(editor.scene.environment);
@@ -541,14 +546,6 @@ function SidebarScene(editor) {
 		refreshEnvironmentUI();
 		refreshFogUI();
 	}
-
-	checkboxSyncBackEnv.onChange(function () {
-		if (checkboxSyncBackEnv.getValue() === true) {
-			// environmentType.setValue("Equirectangular");
-			environmentEquirectangularTexture.setValue(editor.scene.environment);
-			refreshEnvironmentUI();
-		}
-	});
 
 	function refreshFogUI() {
 		const type = fogType.getValue();
