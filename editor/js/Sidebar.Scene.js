@@ -262,10 +262,9 @@ function SidebarScene(editor) {
 			backgroundProjectedSkyboxRadius.getValue(),
 			backgroundProjectedSkyboxScale.getValue()
 		);
-
 		// background in the environment
 		refreshBackEnv(checkboxSyncBackEnv.getValue(), "background");
-
+		console.log(editor.scene);
 		// refreshUI
 	}
 
@@ -343,13 +342,24 @@ function SidebarScene(editor) {
 				selectChoice === "background" &&
 				backgroundType.getValue() != "Texture"
 			) {
-				backgroundType.getValue() === "Equirectangular"
-					? (editor.scene.environment =
-							backgroundEquirectangularTexture.texture)
-					: (editor.scene.environment = backgroundToEquirect.texture);
+				if (backgroundType.getValue() === "Equirectangular") {
+					editor.scene.environment = backgroundEquirectangularTexture.texture;
+					backgroundEquirectangularTexture.setValue(
+						backgroundEquirectangularTexture.texture
+					);
+					environmentEquirectangularTexture.setValue(
+						backgroundEquirectangularTexture.texture
+					);
+				} else {
+					editor.scene.environment = backgroundToEquirect.texture;
+					backgroundEquirectangularTexture.setValue(
+						backgroundToEquirect.texture
+					);
+					environmentEquirectangularTexture.setValue(
+						backgroundToEquirect.texture
+					);
+				}
 				backgroundToEquirect.setValue(editor.scene.environment);
-				backgroundEquirectangularTexture.setValue(editor.scene.environment);
-				environmentEquirectangularTexture.setValue(editor.scene.environment);
 				editor.scene.environment != null &&
 					environmentType.setValue("Equirectangular");
 			} else if (
@@ -483,6 +493,7 @@ function SidebarScene(editor) {
 		if (editor.selected !== null) {
 			outliner.setValue(editor.selected.id);
 		}
+		// console.log(backgroundToEquirect);
 		if (scene.background) {
 			if (scene.background.isColor) {
 				backgroundType.setValue("Color");
