@@ -77,6 +77,7 @@
 			import { Menubar } from "./js/Menubar.js";
 			import { Resizer } from "./js/Resizer.js";
 			import { VRButton } from "three/addons/webxr/VRButton.js";
+			import { Outliner } from "./js/Outliner.js";
 
 			window.URL = window.URL || window.webkitURL;
 			window.BlobBuilder =
@@ -93,6 +94,12 @@
 			window.editor = editor; // Expose editor to Console
 			window.THREE = THREE; // Expose THREE to APP Scripts and Console
 			window.VRButton = VRButton; // Expose VRButton to APP Scripts
+
+			const outliner = new Outliner(editor);
+			document.body.appendChild(outliner.dom);
+
+			// const resizerOutliner = new ResizerOutliner(editor)
+			// document.body.appendChild(ResizerOutliner.dom)
 
 			const viewport = new Viewport(editor);
 			document.body.appendChild(viewport.dom);
