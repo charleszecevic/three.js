@@ -30,7 +30,7 @@ function Resizer(editor) {
 
 		const cX = clientX < 0 ? 0 : clientX > offsetWidth ? offsetWidth : clientX;
 
-		const x = Math.max(260, offsetWidth - cX); // .TabbedPanel min-width: 260px
+		const x = Math.max(300, offsetWidth - cX); // .TabbedPanel min-width: 260px
 
 		dom.style.right = x + "px";
 
@@ -38,6 +38,10 @@ function Resizer(editor) {
 		document.getElementById("player").style.right = x + "px";
 		document.getElementById("script").style.right = x + "px";
 		document.getElementById("viewport").style.right = x + "px";
+		// document.querySelectorAll("#object .Panel .Row input").forEach((elem) => {
+		// 	console.log(elem);
+		// 	elem.style.width = x - 200 + "px";
+		// });
 		// document.querySelector("OutlinePanel").style.left = x + "px";
 
 		signals.windowResize.dispatch();

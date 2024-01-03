@@ -7,7 +7,6 @@ function ResizerOutline(editor) {
 	dom.id = "resizerOutline";
 
 	function onPointerDown(event) {
-		console.log(dom);
 		if (event.isPrimary === false) return;
 
 		dom.ownerDocument.addEventListener("pointermove", onMouseMove);
