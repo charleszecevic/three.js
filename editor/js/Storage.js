@@ -66,6 +66,7 @@ function Storage() {
 						"ms"
 				);
 			};
+			document.getElementById("saveMessage").style.display = "flex";
 		},
 
 		clear: function () {

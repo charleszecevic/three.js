@@ -55,6 +55,13 @@
 		<script src="js/libs/ternjs/doc_comment.js"></script>
 		<script src="js/libs/tern-threejs/threejs.js"></script>
 		<script src="js/libs/signals.min.js"></script>
+		<div class="saveMessage" id="saveMessage">
+			<div>
+				<p>Save done</p>
+				<span>&#10003;</span>
+			</div>
+			<button id="closeButton">x</button>
+		</div>
 
 		<script type="importmap">
 			{
@@ -77,6 +84,7 @@
 			import { Menubar } from "./js/Menubar.js";
 			import { Resizer } from "./js/Resizer.js";
 			import { VRButton } from "three/addons/webxr/VRButton.js";
+			import { ResizerOutline } from "./js/ResizerOutline.js";
 			import { Outliner } from "./js/Outliner.js";
 
 			window.URL = window.URL || window.webkitURL;
@@ -95,14 +103,11 @@
 			window.THREE = THREE; // Expose THREE to APP Scripts and Console
 			window.VRButton = VRButton; // Expose VRButton to APP Scripts
 
-			const outliner = new Outliner(editor);
-			document.body.appendChild(outliner.dom);
-
-			// const resizerOutliner = new ResizerOutliner(editor)
-			// document.body.appendChild(ResizerOutliner.dom)
-
 			const viewport = new Viewport(editor);
 			document.body.appendChild(viewport.dom);
+			// outliner
+			const outliner = new Outliner(editor);
+			document.body.appendChild(outliner.dom);
 
 			const toolbar = new Toolbar(editor);
 			document.body.appendChild(toolbar.dom);
@@ -119,8 +124,18 @@
 			const menubar = new Menubar(editor);
 			document.body.appendChild(menubar.dom);
 
+			// resize for outliner
+			const resizerOutline = new ResizerOutline(editor);
+			document.body.appendChild(resizerOutline.dom);
+
 			const resizer = new Resizer(editor);
 			document.body.appendChild(resizer.dom);
+
+			document
+				.getElementById("closeButton")
+				.addEventListener("click", function () {
+					document.getElementById("saveMessage").style.display = "none";
+				});
 
 			//
 
@@ -171,7 +186,6 @@
 				// signals.scriptChanged.add(saveState);
 				// signals.historyChanged.add(saveState);
 			});
-
 			//
 
 			document.addEventListener("dragover", function (event) {

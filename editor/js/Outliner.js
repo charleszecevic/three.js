@@ -1,10 +1,10 @@
-import { UIOutlinePanel } from "./libs/ui.js";
+import { UIPanel } from "./libs/ui.js";
 import { UIOutliner } from "./libs/ui.three.js";
 
 function Outliner(editor) {
 	const signals = editor.signals;
 
-	const container = new UIOutlinePanel();
+	const container = new UIPanel();
 	container.setId("OutlinePanel");
 
 	// outliner
@@ -90,7 +90,6 @@ function Outliner(editor) {
 				getMaterialName(material)
 			)}`;
 		}
-		console.log(html);
 		html += getScript(object.uuid);
 
 		return html;
