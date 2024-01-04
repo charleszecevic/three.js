@@ -53,8 +53,9 @@ function Strings(config) {
 			"menubar/add/ambientlight": "AmbientLight",
 			"menubar/add/perspectivecamera": "PerspectiveCamera",
 			"menubar/add/orthographiccamera": "OrthographicCamera",
-			// modif english
 			"menubar/status/autosave": "save",
+			// add
+			"menubar/status/outlinerDisplay": "disable",
 
 			"menubar/play": "Play",
 			"menubar/play/stop": "Stop",
@@ -404,6 +405,8 @@ function Strings(config) {
 			"menubar/add/orthographiccamera": "Caméra orthographique",
 			// modif français
 			"menubar/status/autosave": "enregistrement",
+			// add
+			"menubar/status/outlinerDisplay": "cacher",
 
 			"menubar/play": "Jouer",
 			"menubar/play/stop": "Arrêter",
@@ -753,6 +756,8 @@ function Strings(config) {
 			"menubar/add/orthographiccamera": "正交相机",
 
 			"menubar/status/autosave": "自动保存",
+			// add
+			"menubar/status/outlinerDisplay": "保存",
 
 			"menubar/play": "启动",
 			"menubar/play/stop": "暂停",

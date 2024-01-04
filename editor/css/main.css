@@ -308,6 +308,8 @@ select:hover {
   bottom: 0;
 }
 
+/* save message */
+
 .saveMessage {
   position: absolute;
   display: none;
@@ -368,6 +370,7 @@ select:hover {
 }
 
 #OutlinePanel {
+  display: block;
   position: absolute;
   left: 0;
   top: 32px;

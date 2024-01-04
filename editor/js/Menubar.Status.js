@@ -38,6 +38,33 @@ function MenubarStatus(editor) {
 
 	// container.add(autosave);
 
+	// --------------------------------------------- display oultiner ---------------------------------------------
+
+	const displayOutliner = new UIButton(
+		strings.getKey("menubar/status/outlinerDisplay")
+	);
+	displayOutliner.setMarginRight("10px");
+	displayOutliner.onClick(() => {
+		const outliner = document.getElementById("OutlinePanel").style;
+		const toolbar = document.getElementById("toolbar").style;
+		const info = document.getElementById("info").style;
+		outliner.display == "" ? (outliner.display = "block") : null;
+		if (outliner.display === "block") {
+			outliner.display = "none";
+			toolbar.left = "25px";
+			info.left = "25px";
+		} else {
+			outliner.display = "block";
+			toolbar.left = outliner.width
+				? parseInt(outliner.width, 10) + 25 + "px"
+				: parseInt(toolbar.left, 10) + 200 + "px";
+			info.left = outliner.width
+				? parseInt(outliner.left, 10) + "px"
+				: parseInt(info.left, 10) + 200 + "px";
+		}
+	});
+	container.add(displayOutliner);
+
 	// --------------------------------------------- autosave (new version) ---------------------------------------------
 
 	const save = new UIButton(strings.getKey("menubar/status/autosave"));

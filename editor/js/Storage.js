@@ -57,7 +57,6 @@ function Storage() {
 			const transaction = database.transaction(["states"], "readwrite");
 			const objectStore = transaction.objectStore("states");
 			const request = objectStore.put(data, 0);
-			console.log(request);
 			request.onsuccess = function () {
 				console.log(
 					"[" + /\d\d\:\d\d\:\d\d/.exec(new Date())[0] + "]",

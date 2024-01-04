@@ -207,6 +207,7 @@ function Viewport(editor) {
 	function onMouseDown(event) {
 		// event.preventDefault();
 
+		// pour manipuler le disable
 		if (event.target !== renderer.domElement) return;
 
 		const array = getMousePosition(container.dom, event.clientX, event.clientY);
@@ -609,6 +610,8 @@ function Viewport(editor) {
 	signals.windowResize.add(function () {
 		updateAspectRatio();
 
+		// pour manipuler le disable
+
 		renderer.setSize(container.dom.offsetWidth, container.dom.offsetHeight);
 
 		render();
@@ -677,6 +680,8 @@ function Viewport(editor) {
 
 	function render() {
 		startTime = performance.now();
+
+		// pour manipuler le disable
 
 		renderer.setViewport(
 			0,

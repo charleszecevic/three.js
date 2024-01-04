@@ -106,10 +106,10 @@
 
 			// check save
 
-			window.addEventListener("beforeunload", (e) => {
-				e.preventDefault();
-				e.returnValue = true;
-			});
+			// window.addEventListener("beforeunload", (e) => {
+			// 	e.preventDefault();
+			// 	e.returnValue = true;
+			// });
 
 			const viewport = new Viewport(editor);
 			document.body.appendChild(viewport.dom);
