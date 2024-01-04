@@ -98,10 +98,18 @@
 			//
 
 			const editor = new Editor();
+			const unloadMessage = document.querySelector(".messageBeforeUnload");
 
 			window.editor = editor; // Expose editor to Console
 			window.THREE = THREE; // Expose THREE to APP Scripts and Console
 			window.VRButton = VRButton; // Expose VRButton to APP Scripts
+
+			// check save
+
+			window.addEventListener("beforeunload", (e) => {
+				e.preventDefault();
+				e.returnValue = true;
+			});
 
 			const viewport = new Viewport(editor);
 			document.body.appendChild(viewport.dom);
@@ -131,13 +139,10 @@
 			const resizer = new Resizer(editor);
 			document.body.appendChild(resizer.dom);
 
-			document
-				.getElementById("closeButton")
-				.addEventListener("click", function () {
-					document.getElementById("saveMessage").style.display = "none";
-				});
-
-			//
+			// save message
+			document.getElementById("closeButton").addEventListener("click", () => {
+				document.getElementById("saveMessage").style.display = "none";
+			});
 
 			editor.storage.init(function () {
 				editor.storage.get(function (state) {
