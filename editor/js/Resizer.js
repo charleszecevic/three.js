@@ -32,12 +32,14 @@ function Resizer(editor) {
 
 		const x = Math.max(300, offsetWidth - cX); // .TabbedPanel min-width: 260px
 
+		console.log(x);
+
 		dom.style.right = x + "px";
 
 		document.getElementById("sidebar").style.width = x + "px";
 		document.getElementById("player").style.right = x + "px";
 		document.getElementById("script").style.right = x + "px";
-		// document.getElementById("viewport").style.right = x + "px";
+		document.getElementById("viewport").style.right = x + "px";
 
 		signals.windowResize.dispatch();
 	}

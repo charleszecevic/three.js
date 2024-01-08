@@ -2,7 +2,6 @@ import * as THREE from "three";
 
 import {
 	UIPanel,
-	UIBreak,
 	UIRow,
 	UIColor,
 	UISelect,

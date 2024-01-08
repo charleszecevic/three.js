@@ -33,7 +33,7 @@ function ResizerOutline(editor) {
 		document.getElementById("OutlinePanel").style.width = x + "px";
 		document.getElementById("toolbar").style.left = x + 25 + "px";
 		document.getElementById("info").style.left = 25 + "px";
-		// document.getElementById("viewport").style.left = x + "px";
+		document.getElementById("viewport").style.left = x + "px";
 
 		signals.windowResize.dispatch();
 	}

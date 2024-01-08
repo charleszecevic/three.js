@@ -12,6 +12,7 @@ function Outliner(editor) {
 	const nodeStates = new WeakMap();
 
 	function buildOption(object, draggable) {
+		document.getElementById("viewport").style.left = "200px";
 		const option = document.createElement("div");
 		option.draggable = draggable;
 		option.innerHTML = buildHTML(object);

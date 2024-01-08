@@ -610,7 +610,7 @@ function Viewport(editor) {
 	signals.windowResize.add(function () {
 		updateAspectRatio();
 
-		// pour manipuler le disable
+		// pour manipuler l'affichage
 
 		renderer.setSize(container.dom.offsetWidth, container.dom.offsetHeight);
 
@@ -682,26 +682,27 @@ function Viewport(editor) {
 		startTime = performance.now();
 
 		// pour manipuler le disable
-
-		renderer.setViewport(
-			0,
-			0,
-			container.dom.offsetWidth,
-			container.dom.offsetHeight
-		);
-		renderer.render(scene, editor.viewportCamera);
-
-		if (camera === editor.viewportCamera) {
-			renderer.autoClear = false;
-			if (showSceneHelpers === true) renderer.render(sceneHelpers, camera);
-			if (vr.currentSession === null) viewHelper.render(renderer);
-			renderer.autoClear = true;
+		if (renderer && container && container.dom) {
+			renderer.setViewport(
+				0,
+				0,
+				container.dom.offsetWidth,
+				container.dom.offsetHeight
+			);
+			renderer.render(scene, editor.viewportCamera);
+			if (camera === editor.viewportCamera) {
+				renderer.autoClear = false;
+				if (showSceneHelpers === true) renderer.render(sceneHelpers, camera);
+				if (vr.currentSession === null) viewHelper.render(renderer);
+				renderer.autoClear = true;
+			}
 		}
 
 		endTime = performance.now();
 		editor.signals.sceneRendered.dispatch(endTime - startTime);
 	}
 
+	document.body.appendChild(container.dom);
 	return container;
 }
 

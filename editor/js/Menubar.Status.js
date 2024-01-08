@@ -2,10 +2,10 @@ import * as THREE from "three";
 
 import { UIPanel, UIText } from "./libs/ui.js";
 import { UIButton } from "./libs/ui.js";
-import { UIBoolean } from "./libs/ui.three.js";
 
 function MenubarStatus(editor) {
 	const strings = editor.strings;
+	const signals = editor.signals;
 
 	const container = new UIPanel();
 	container.setClass("menu right");
@@ -45,22 +45,36 @@ function MenubarStatus(editor) {
 	);
 	displayOutliner.setMarginRight("10px");
 	displayOutliner.onClick(() => {
+		// const
 		const outliner = document.getElementById("OutlinePanel").style;
 		const toolbar = document.getElementById("toolbar").style;
 		const info = document.getElementById("info").style;
-		outliner.display == "" ? (outliner.display = "block") : null;
+		const viewport = document.getElementById("viewport").style;
+		const sidebar = document.getElementById("sidebar").style;
+
+		// console.log(document.body.offsetWidth);
+
+		outliner.display = outliner.display == "" ? "block" : "none";
+
 		if (outliner.display === "block") {
 			outliner.display = "none";
+			sidebar.display = "none";
 			toolbar.left = "25px";
 			info.left = "25px";
+			viewport.left = "0px";
+			viewport.right = "0px";
 		} else {
 			outliner.display = "block";
+			sidebar.display = "block";
 			toolbar.left = outliner.width
 				? parseInt(outliner.width, 10) + 25 + "px"
 				: parseInt(toolbar.left, 10) + 200 + "px";
-			info.left = outliner.width
-				? parseInt(outliner.left, 10) + "px"
-				: parseInt(info.left, 10) + 200 + "px";
+			info.left =
+				outliner.width > 200 ? "25px" : parseInt(toolbar.left, 10) - 200 + "px";
+			console.log(info.left);
+			viewport.left = "200px";
+			viewport.right = "300px";
+			signals.windowResize.dispatch();
 		}
 	});
 	container.add(displayOutliner);
