@@ -68,8 +68,13 @@ function MenubarStatus(editor) {
 				: parseInt(toolbar.left, 10) + 200 + "px";
 			info.left =
 				outliner.width > 200 ? "25px" : parseInt(toolbar.left, 10) - 200 + "px";
-			viewport.left = "200px";
-			viewport.right = "300px";
+			console.log(parseInt(outliner.width, 10) + "px");
+			viewport.left = outliner.width
+				? parseInt(outliner.width, 10) + "px"
+				: "200px";
+			viewport.right = sidebar.width
+				? parseInt(sidebar.width, 10) + "px"
+				: "300px";
 		}
 		signals.windowResize.dispatch();
 	});
