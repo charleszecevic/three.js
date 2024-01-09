@@ -23,16 +23,12 @@ function Resizer(editor) {
 	function onPointerMove(event) {
 		// PointerEvent's movementX/movementY are 0 in WebKit
 
-		if (event.isPrimary === false) return;
-
 		const offsetWidth = document.body.offsetWidth;
 		const clientX = event.clientX;
 
 		const cX = clientX < 0 ? 0 : clientX > offsetWidth ? offsetWidth : clientX;
 
 		const x = Math.max(300, offsetWidth - cX); // .TabbedPanel min-width: 260px
-
-		console.log(x);
 
 		dom.style.right = x + "px";
 

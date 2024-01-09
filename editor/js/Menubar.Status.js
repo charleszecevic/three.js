@@ -44,6 +44,7 @@ function MenubarStatus(editor) {
 		strings.getKey("menubar/status/outlinerDisplay")
 	);
 	displayOutliner.setMarginRight("10px");
+	document.getElementById("OutlinePanel").style.display = "block";
 	displayOutliner.onClick(() => {
 		// const
 		const outliner = document.getElementById("OutlinePanel").style;
@@ -51,10 +52,6 @@ function MenubarStatus(editor) {
 		const info = document.getElementById("info").style;
 		const viewport = document.getElementById("viewport").style;
 		const sidebar = document.getElementById("sidebar").style;
-
-		// console.log(document.body.offsetWidth);
-
-		outliner.display = outliner.display == "" ? "block" : "none";
 
 		if (outliner.display === "block") {
 			outliner.display = "none";
@@ -71,11 +68,10 @@ function MenubarStatus(editor) {
 				: parseInt(toolbar.left, 10) + 200 + "px";
 			info.left =
 				outliner.width > 200 ? "25px" : parseInt(toolbar.left, 10) - 200 + "px";
-			console.log(info.left);
 			viewport.left = "200px";
 			viewport.right = "300px";
-			signals.windowResize.dispatch();
 		}
+		signals.windowResize.dispatch();
 	});
 	container.add(displayOutliner);
 

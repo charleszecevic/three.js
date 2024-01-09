@@ -332,9 +332,6 @@ select:hover {
 
 .saveMessage div span {
   font-size: 15px;
-  background-color: #33e1338b;
-  padding: 5px 12px;
-  border-radius: 100px;
 }
 
 .saveMessage button {
