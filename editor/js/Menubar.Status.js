@@ -1,7 +1,7 @@
 import * as THREE from "three";
-
 import { UIPanel, UIText } from "./libs/ui.js";
 import { UIButton } from "./libs/ui.js";
+import { UIBoolean } from "./libs/ui.three.js";
 
 function MenubarStatus(editor) {
 	const strings = editor.strings;
@@ -10,35 +10,7 @@ function MenubarStatus(editor) {
 	const container = new UIPanel();
 	container.setClass("menu right");
 
-	// --------------------------------------------- autosave (old version) ---------------------------------------------
-
-	// const autosave = new UIBoolean(
-	// 	editor.config.getKey("autosave"),
-	// 	strings.getKey("menubar/status/autosave")
-	// );
-	// autosave.text.setColor("#888");
-	// autosave.onChange(function () {
-	// 	const value = this.getValue();
-
-	// 	editor.config.setKey("autosave", value);
-
-	// 	if (value === true) {
-	// 		editor.signals.sceneGraphChanged.dispatch();
-	// 	}
-	// });
-	// container.add(autosave);
-
-	// editor.signals.savingStarted.add(function () {
-	// 	autosave.text.setTextDecoration("underline");
-	// });
-
-	// editor.signals.savingFinished.add(function () {
-	// 	autosave.text.setTextDecoration("none");
-	// });
-
-	// container.add(autosave);
-
-	// --------------------------------------------- display oultiner ---------------------------------------------
+	// -------------------------------------------------- fullscreen --------------------------------------------------
 
 	const displayOutliner = new UIButton(
 		strings.getKey("menubar/status/outlinerDisplay")
@@ -80,9 +52,9 @@ function MenubarStatus(editor) {
 	});
 	container.add(displayOutliner);
 
-	// --------------------------------------------- autosave (new version) ---------------------------------------------
+	// -------------------------------------------------- save --------------------------------------------------
 
-	const save = new UIButton(strings.getKey("menubar/status/autosave"));
+	const save = new UIButton(strings.getKey("menubar/status/save"));
 	save.onClick(() => {
 		editor.signals.sceneGraphChanged.dispatch();
 		editor.signals.savingStarted.dispatch();
@@ -95,6 +67,34 @@ function MenubarStatus(editor) {
 	version.setClass("title");
 	version.setOpacity(0.5);
 	container.add(version);
+
+	// -------------------------------------------------- autosave --------------------------------------------------
+
+	const autosave = new UIBoolean(
+		editor.config.getKey("autosave"),
+		strings.getKey("menubar/status/autosave")
+	);
+	autosave.text.setColor("#888");
+	autosave.onChange(function () {
+		const value = this.getValue();
+
+		editor.config.setKey("autosave", value);
+
+		if (value === true) {
+			editor.signals.sceneGraphChanged.dispatch();
+		}
+	});
+	container.add(autosave);
+
+	editor.signals.savingStarted.add(function () {
+		autosave.text.setTextDecoration("underline");
+	});
+
+	editor.signals.savingFinished.add(function () {
+		autosave.text.setTextDecoration("none");
+	});
+
+	container.add(autosave);
 
 	return container;
 }

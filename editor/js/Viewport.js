@@ -207,7 +207,7 @@ function Viewport(editor) {
 	function onMouseDown(event) {
 		// event.preventDefault();
 
-		// pour manipuler le disable
+		// pour manipuler le fullScreen
 		if (event.target !== renderer.domElement) return;
 
 		const array = getMousePosition(container.dom, event.clientX, event.clientY);
@@ -681,7 +681,7 @@ function Viewport(editor) {
 	function render() {
 		startTime = performance.now();
 
-		// pour manipuler le disable
+		// pour manipuler le fullScreen
 		if (renderer && container && container.dom) {
 			renderer.setViewport(
 				0,
