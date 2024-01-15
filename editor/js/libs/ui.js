@@ -357,6 +357,22 @@ class UICheckbox extends UIElement {
 
 		this.dom.className = "Checkbox";
 		this.dom.type = "checkbox";
+	constructor( boolean ) {
+
+		super( document.createElement( 'input' ) );
+
+		this.dom.className = 'Checkbox';
+		this.dom.type = 'checkbox';
+
+		this.dom.addEventListener( 'pointerdown', function ( event ) {
+
+			// Workaround for TransformControls blocking events in Viewport.Controls checkboxes
+
+			event.stopPropagation();
+		
+		} );
+
+		this.setValue( boolean );
 
 		this.setValue(boolean);
 	}
@@ -500,6 +516,11 @@ class UINumber extends UIElement {
 
 				prevPointer.x = event.touches[0].pageX;
 				prevPointer.y = event.touches[0].pageY;
+				prevPointer.x = event.touches[ 0 ].pageX;
+				prevPointer.y = event.touches[ 0 ].pageY;
+
+				document.addEventListener( 'touchmove', onTouchMove, { passive: false } );
+				document.addEventListener( 'touchend', onTouchEnd );
 
 				document.addEventListener("touchmove", onTouchMove);
 				document.addEventListener("touchend", onTouchEnd);
@@ -507,6 +528,10 @@ class UINumber extends UIElement {
 		}
 
 		function onTouchMove(event) {
+		function onTouchMove( event ) {
+
+			event.preventDefault();
+
 			const currentValue = scope.value;
 
 			pointer.x = event.touches[0].pageX;

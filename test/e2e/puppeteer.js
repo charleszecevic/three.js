@@ -89,7 +89,9 @@ const exceptionList = [
 	'webgl_materials_blending',
 	'webgl_mirror',
 	'webgl_morphtargets_face',
+	'webgl_nodes_loader_materialx',
 	'webgl_nodes_materials_standard',
+	'webgl_nodes_materialx_noise',
 	'webgl_postprocessing_crossfade',
 	'webgl_postprocessing_dof2',
 	'webgl_raymarching_reflect',
@@ -101,36 +103,43 @@ const exceptionList = [
 	'webgl2_volume_instancing',
 	'webgl2_multisampled_renderbuffers',
 	'webgl_points_dynamic',
+	'webgpu_multisampled_renderbuffers',
 
 	// TODO: implement determinism for setTimeout and setInterval
 	// could it fix some examples from above?
 	'physics_rapier_instancing',
 
-	// Awaiting for WebGPU support
+	// Awaiting for WebGL backend support
 	'webgpu_clearcoat',
 	'webgpu_compute_audio',
-	'webgpu_compute_particles',
-	'webgpu_compute_particles_rain',
-	'webgpu_compute_points',
 	'webgpu_compute_texture',
 	'webgpu_compute_texture_pingpong',
-	'webgpu_cubemap_dynamic',
-	'webgpu_loader_gltf',
-	'webgpu_loader_gltf_compressed',
-	'webgpu_loader_gltf_iridescence',
-	'webgpu_loader_gltf_sheen',
 	'webgpu_materials',
 	'webgpu_sandbox',
 	'webgpu_sprites',
 	'webgpu_video_panorama',
 
 	// WebGPURenderer: Unknown problem
+	'webgpu_postprocessing_afterimage',
+	'webgpu_backdrop_water',
 	'webgpu_camera_logarithmicdepthbuffer',
+	'webgpu_loader_materialx',
 	'webgpu_materials_video',
+	'webgpu_materialx_noise',
+	'webgpu_morphtargets_face',
+	'webgpu_occlusion',
 	'webgpu_particles',
 	'webgpu_shadertoy',
+	'webgpu_shadowmap',
 	'webgpu_tsl_editor',
-	'webgpu_tsl_transpiler'
+	'webgpu_tsl_transpiler',
+	'webgpu_portal',
+
+	// WebGPU idleTime and parseTime too low
+	'webgpu_compute_particles',
+	'webgpu_compute_particles_rain',
+	'webgpu_compute_particles_snow',
+	'webgpu_compute_points'
 
 ];
 
